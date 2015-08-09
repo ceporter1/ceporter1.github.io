@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Charlotte Porter - 215229495 -->
+<root>
+    <starters> 
+        <title>Prawn cocktails</title>
+        <ingred>Short description about how good the prawns are</ingred>
+        <desc>List of all the ingredience used</desc>
+        <src>prawns.jpg</src>  
+    </starters>
+      <starters> 
+        <title>Soup</title>
+        <ingred>Short description about how good the soup is</ingred>
+        <desc>List of all the ingredience used</desc>
+        <src>prawns.jpg</src>  
+    </starters>
+      <main> 
+        <title>Steak</title>
+        <ingred>Short description about how good the steak is</ingred>
+        <desc>List of all the ingredience used</desc>
+        <src>prawns.jpg</src>  
+    </main>
+       <main> 
+        <title>Pizza</title>
+        <ingred>Short description about how good the pizza is</ingred>
+        <desc>List of all the ingredience used</desc>
+        <src></src>  
+    </main>
+       <desert> 
+        <title>Cake</title>
+        <ingred>Short description about how good the cake is</ingred>
+        <desc>List of all the ingredience used</desc>
+        <src>prawns.jpg</src>  
+    </desert>
+       <desert> 
+        <title>Icecream</title>
+        <ingred>Short description about how good the icecream is</ingred>
+        <desc>List of all the ingredience used</desc>
+        <src>prawns.jpg</src>  
+    </desert>
+ 
+
+
+</root>

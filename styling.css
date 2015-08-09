@@ -1,0 +1,60 @@
+//<!--Charlotte Porter - 215229495 -->
+h1 {
+  
+    padding: 0px;
+    margin: 0px;
+}
+
+p.sansserif {
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 0px;
+
+    font-weight: 900;
+}
+
+#customNav {
+     margin: 0px;
+     padding: 0px;
+     border: 2px black solid;
+
+}
+#custom-li-1.ui-btn {
+    background-color:#6CCECB !important;
+
+}
+			
+#custom-li-2.ui-btn {
+    background:#F9E559 !important;
+}
+
+#custom-li-3.ui-btn {
+    background:#EF7126 !important;
+}
+#custom-li-4.ui-btn {
+    background:#8EDC9D !important;
+}
+#custom-li-5.ui-btn {
+    background:#473E3F !important;
+}
+#custom-li-11.ui-btn {
+    background:#218C8D !important;
+}
+
+#custom-li {
+    background:#218C8D !important;
+}
+iframe {
+    border: none;
+}
+
+     @media only screen and (min-width: 600px){
+            .ui-content {
+                width: 650px !important;
+                height: 500px !important;
+                margin: 0 auto !important;
+                position: relative !important;
+                border-right: 5px #666 outset !important;
+                border-left: 5px #666 outset !important;
+              
+            }
+        }

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<!--Charlotte Porter - 215229495 -->
+<html>
+    <head>
+        <title>Resturants</title>
+
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+
+
+        <link rel="stylesheet" type="text/css" href="styling.css">
+        <script>// popup examples
+            if (window.XMLHttpRequest)
+            {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else
+            {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.open("GET", "data.xml", false);
+            xmlhttp.send();
+            xmlDoc = xmlhttp.responseXML;
+            document.write("<table><tr><th>Artist</th><th>Title</th></tr>");
+            var x = xmlDoc.getElementsByTagName("entry");
+            takeId = 0;
+            $(document).on("pagecreate", function() {
+                    // The window width and height are decreased by 30 to take the tolerance of 15 pixels at each side into account
+                    function scale(width, height, padding, border) {
+                            var scrWidth = $(window).width() - 30,
+                                        scrHeight = $(window).height() - 30,
+                                        ifrPadding = 2 * padding,
+                                        ifrBorder = 2 * border,
+                                        ifrWidth = width + ifrPadding + ifrBorder,
+                                        ifrHeight = height + ifrPadding + ifrBorder,
+                                        h, w;
+                            if (ifrWidth < scrWidth && ifrHeight < scrHeight) {
+                                    w = ifrWidth;
+                                    h = ifrHeight;
+                            } else if ((ifrWidth / scrWidth) > (ifrHeight / scrHeight)) {
+                                    w = scrWidth;
+                                    h = (scrWidth / ifrWidth) * ifrHeight;
+                            } else {
+                                    h = scrHeight;
+                                    w = (scrHeight / ifrHeight) * ifrWidth;
+                            }
+                            return {
+                                    'width': w - (ifrPadding + ifrBorder),
+                                    'height': h - (ifrPadding + ifrBorder)
+                            };
+                    }
+                ;
+                    $(".ui-popup iframe")
+                                .attr("width", 0)
+                                .attr("height", "auto");
+                    $("#popupMap iframe").contents().find("#map_canvas")
+                                .css({"width": 0, "height": 0});
+                    $("#popupMap").on({
+                            popupbeforeposition: function() {
+                                    var size = scale(480, 320, 0, 1),
+                                                w = size.width,
+                                                h = size.height;
+                                    $("#popupMap iframe")
+                                                .attr("width", w)
+                                                .attr("height", h);
+                                    $("#popupMap iframe").contents().find("#map_canvas")
+                                                .css({"width": w, "height": h});
+                            },
+                            popupafterclose: function() {
+                                    $("#popupMap iframe")
+                                                .attr("width", 0)
+                                                .attr("height", 0);
+                                    $("#popupMap iframe").contents().find("#map_canvas")
+                                                .css({"width": 0, "height": 0});
+                            }
+                    });
+            });
+            $(document).ready(function() {
+                $('#search').on('keyup', function() {
+                    $.ajax({
+                        type: "GET",
+                        url: "data.xml",
+                        dataType: "xml",
+                        success: parseXML
+                    });
+                });
+            });
+            function parseXML(xml) {
+                var searchFor = $('#search').val();
+                var reg = new RegExp(searchFor, "i");
+                $(xml).find('entry').each(function() {
+                    var title = $(this).find('title').text();
+                    var titleSearch = title.search(reg);
+                    var desc = $(this).find('description').text();
+                    var descSearch = desc.search(reg);
+                    $('#output').empty();
+                    if (titleSearch > -1) {
+                        $('#output').append('Found <i>' + searchFor + '<\/i> in title: ' + title.replace(reg, '<b>' + searchFor + '</b>') + '<br \/>');
+                    }
+                    if (descSearch > -1) {
+                        $('#output').append('Found <i>' + searchFor + '<\/i> in description: ' + desc.replace(reg, '<b>' + searchFor + '</b>') + '<br \/>');
+                    }
+                });
+            }
+
+
+
+        </script>
+
+    </head>
+    <body>
+
+        <!-- Start of first page -->
+        <div data-role="page" id="home">
+            
+
+            <div data-role="header">
+                <h1>Homepage</h1>
+
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+                <a href="#order" class="ui-btn" id="custom-li-1">Order</a>
+                <a href="feedBack.php" class="ui-btn" id="custom-li-2">Feedback</a>
+                <a href="#devel" class="ui-btn" id="custom-li-3">About us</a>
+
+                <!-- http://www.w3schools.com/php/php_ajax_livesearch.asp -->
+                <input type="text" id="search"  autocomplete="off" />
+                <p id="output"></p>
+
+
+            </div><!-- /content -->
+
+            <div data-role="footer">
+                <h4>Page Footer</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+
+        <!-- Start of second page -->
+        <div data-role="page" id="order">
+            <script>
+
+
+                $(document).ready(function() {
+                    $(".trigger").click(function() {
+                        $(".menu").toggleClass("active");
+                    });
+                });
+
+            </script>
+            <script>
+                $(document).on("pageinit", function() {
+                    function scale(width, height, padding, border) {
+                        var scrWidth = $(window).width() - 30,
+                                scrHeight = $(window).height() - 30,
+                                ifrPadding = 2 * padding,
+                                ifrBorder = 2 * border,
+                                ifrWidth = width + ifrPadding + ifrBorder,
+                                ifrHeight = height + ifrPadding + ifrBorder,
+                                h, w;
+
+                        if (ifrWidth < scrWidth && ifrHeight < scrHeight) {
+                            w = ifrWidth;
+                            h = ifrHeight;
+                        } else if ((ifrWidth / scrWidth) > (ifrHeight / scrHeight)) {
+                            w = scrWidth;
+                            h = (scrWidth / ifrWidth) * ifrHeight;
+                        } else {
+                            h = scrHeight;
+                            w = (scrHeight / ifrHeight) * ifrWidth;
+                        }
+
+                        return {
+                            'width': w - (ifrPadding + ifrBorder),
+                            'height': h - (ifrPadding + ifrBorder)
+                        };
+                    }
+                    ;
+
+                    $(".ui-popup iframe")
+                            .attr("width", 0)
+                            .attr("height", "auto");
+
+                    $("#popupVideo").on({
+                        popupbeforeposition: function() {
+                            // call our custom function scale() to get the width and height 
+                            var size = scale(497, 298, 15, 1),
+                                    w = size.width,
+                                    h = size.height;
+
+                            $("#popupVideo iframe")
+                                    .attr("width", w)
+                                    .attr("height", h);
+                        },
+                        popupafterclose: function() {
+                            $("#popupVideo iframe")
+                                    .attr("width", 0)
+                                    .attr("height", 0);
+                        }
+                    });
+                });</script>
+
+            <div data-role="header">
+                <a href="#home" class="ui-btn ui-btn-b ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
+                <h1>Food type</h1>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+
+                <div class="menu">
+                    <div class="btn trigger" > <span class="line"></span> </div>
+                    <div class="rotater">
+                        <div class="btn btn-icon" style="background-color: #218C8D"><a href="#chinese">Chinese</a> </div>
+                    </div>
+                    <div class="rotater">
+                        <div class="btn btn-icon" style="background-color:  #6CCECB"></div>
+                    </div>
+
+                    <div class="rotater">
+                        <div class="btn btn-icon" style="background-color: #F9E559"></div>
+                    </div>
+
+                    <div class="rotater">
+                        <div class="btn btn-icon" style="background-color: #EF7126"></div>
+                    </div>
+
+                    <div class="rotater">
+                        <div class="btn btn-icon" style="background-color: #8EDC9D"></div>
+                    </div>
+                    <div class="rotater">
+                        <div class="btn btn-icon" style="background-color: #473E3F"></div>
+                    </div>
+
+                </div>
+            </div>
+            <!--      <div data-role="popup" id="popupVideo" data-overlay-theme="a" data-theme="d" data-tolerance="15,15" class="ui-content" data-history="false">
+                      <div data-role="main" class="ui-content">
+                          <form method="post" action="demoform.asp">
+                              <div class="ui-field-contain">
+                                  <label for="fullname">Full name:</label>
+                                  <input type="text" name="fullname" id="fullname">
+                                  <label for="bday">Date of Birth:</label>
+                                  <input type="date" name="bday" id="bday">
+                                  <label for="email">E-mail:</label>
+                                  <input type="email" name="email" id="email" placeholder="Your email..">
+                              </div>
+                              <input type="submit" data-inline="true" value="Submit">
+                          </form>
+                      </div>
+                  </div>  -->
+
+            <div data-role="footer">
+                <h4>Page Footer</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+
+
+        <!-- Start of third page -->
+        <div data-role="page" id="devel">
+
+            <div data-role="header">
+                <a href="#home" class="ui-btn ui-corner-all ui-shadow ui-icon-arrow-l ui-btn-icon-left">Back</a>
+                <h1>About the Developer</h1>
+                <a href="#home" class="ui-btn ui-btn-b ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+                <p>I'm the second in the source order so I'm hidden when the page loads. I'm just shown if a link that references my id is beeing clicked.</p>
+                <p><a href="#home">Back to Homepage</a></p>
+            </div><!-- /content -->
+
+            <div data-role="footer">
+                <h4>Page Footer</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+        <div data-role="page" id="chinese">
+
+            <div data-role="header">
+                <a href="#order" class="ui-btn ui-corner-all ui-shadow ui-icon-arrow-l ui-btn-icon-left">Back</a>
+                <h1><script>document.write(x[takeId].getElementsByTagName("title")[0].childNodes[0].nodeValue);</script></h1>
+                <a href="#home" class="ui-btn ui-btn-b ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
+                <div data-role="navbar">
+                    <ul>
+
+                        <li><a href="#myPopupPhone" data-rel="popup" class="ui-btn ui-shadow ui-corner-all ui-icon-phone ui-btn-icon-bottom " id="custom-li-1"> </a></li>
+                        <li><a href="#popupMap" data-rel="popup" data-position-to="window" class="ui-btn ui-shadow ui-corner-all ui-icon-info ui-btn-icon-bottom" id="custom-li-2"></a></li>
+                        <li><a href="#" class="ui-btn ui-shadow ui-corner-all ui-icon-camera ui-btn-icon-bottom" id="custom-li-3"> </a></li>
+                        <li><a href="#" class="ui-btn ui-shadow ui-corner-all ui-icon-star ui-btn-icon-bottom" id="custom-li-4"> </a></li>
+                    </ul>
+                  
+
+                    <div data-role="popup" id="myPopupPhone">
+                        <p>Call <script>document.write(x[takeId].getElementsByTagName("title")[0].childNodes[0].nodeValue);</script>?</p>
+                  
+                      <a href="tel:+447927096757" rel="external" class="ui-btn ui-shadow ui-corner-all">
+                      <script>document.write(x[takeId].getElementsByTagName("number")[0].childNodes[0].nodeValue);</script></a>
+                    </div>
+                </div><!-- /navbar -->
+
+                <div data-role="popup" id="popupMap" data-overlay-theme="a" data-theme="a" data-corners="false" data-tolerance="15,15">
+                        <a href="#" data-rel="back" class="ui-btn ui-btn-b ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                    <script>document.write(x[takeId].getElementsByTagName("description")[0].childNodes[0].nodeValue);</script>
+                        <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCfg93g7KK8Jfp-00JzrYWTD80E8sPSqT0&q=Space+Needle,Seattle+WA" width="480" height="320" seamless=""></iframe>
+                </div>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+                
+                <div data-role="collapsible" data-inset="false" data-mini="true">
+                        <h3>Starters</h3>
+                    <div data-role="collapsible" data-inset="false" data-mini="true" data-collapsed-icon="info" data-expanded-icon="arrow-d">
+                        <h1>Starter1</h1>
+                        <p>I contain...</p>
+                    </div>
+                    <div data-role="collapsible" data-inset="false" data-mini="true" data-collapsed-icon="info" data-expanded-icon="arrow-d">
+                        <h1>Starter2</h1>
+                        <p>I contain...</p>
+                    </div>
+                </div><!-- /collapsible -->
+                <div data-role="collapsible" data-inset="false" data-mini="true">
+                        <h3>Main</h3>
+                        <ul data-role="listview">
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+
+                    </ul>
+                </div><!-- /collapsible -->
+                <div data-role="collapsible" data-inset="false" data-mini="true">
+                        <h3>Extras</h3>
+                        <ul data-role="listview">
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+
+                    </ul>
+                </div><!-- /collapsible -->
+                <!--     <li><a href="#myPopup1" data-rel="popup" class="ui-btn ui-corner-all ui-icon-info" data-position-to="origin">1</a></li>
+            <div data-role="popup" id="myPopup1" class="ui-content">
+                   <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+              <p>I will appear centered within the window.</p> -->
+
+            </div>
+        </div><!-- /content -->
+
+        <div data-role="footer">
+            <h4>Page Footer</h4>
+        </div><!-- /footer -->
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+    </body>
